@@ -6,15 +6,19 @@ from PySide6.QtWidgets import (QFileDialog, QGridLayout, QLabel, QLineEdit,
                                QMainWindow, QMessageBox, QPushButton,
                                QStackedWidget, QVBoxLayout, QWidget)
 
+from audio_cutter import AudioCutter
+
 
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         self.create_layout()
+        self.audio_cutter = AudioCutter()
 
         self.audio_browse_button.clicked.connect(self.on_audio_browse_clicked)
         self.timestamp_browse_button.clicked.connect(self.on_timestamp_browse_clicked)
         self.output_browse_button.clicked.connect(self.on_output_browse_clicked)
+        self.cut_button.clicked.connect(self.on_cut_button_clicked)
 
     def create_layout(self) -> None:
         self.setWindowTitle("App")
@@ -54,14 +58,14 @@ class MainWindow(QMainWindow):
         grid_layout.addWidget(offset_label, 3, 0)
         grid_layout.addWidget(self.offset_entry, 3, 1)
 
-        cut_button = QPushButton("Cut audio clip")
-        cut_button.setDefault(True)
+        self.cut_button = QPushButton("Cut audio clip")
+        self.cut_button.setDefault(True)
 
         vbox = QVBoxLayout()
         vbox.addStretch()
         vbox.addLayout(grid_layout)
         vbox.addStretch()
-        vbox.addWidget(cut_button)
+        vbox.addWidget(self.cut_button)
         vbox.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         container.setLayout(vbox)
@@ -99,3 +103,40 @@ class MainWindow(QMainWindow):
         dialog = QFileDialog()
         url = dialog.getExistingDirectory()
         self.output_entry.setText(url)
+
+    @Slot()
+    def on_cut_button_clicked(self) -> None:
+        audio_file_url = self.audio_entry.text()
+        timestamps_file_url = self.timestamp_entry.text()
+        output_dir_url = self.output_entry.text()
+
+        offset = self.offset_from_timestamp()
+
+        if not (audio_file_url and timestamps_file_url and output_dir_url):
+            error_box = QMessageBox()
+            error_box.critical(
+                self, "Required fields missing", "Please select all required files"
+            )
+            return
+
+        self.audio_cutter.load_audio_from_file(audio_file_url)
+        self.audio_cutter.load_timestamps_from_file(timestamps_file_url)
+        self.audio_cutter.cut_audio(output_dir_url, offset)
+
+        pass
+
+    def offset_from_timestamp(self) -> float:
+        timestamp = self.offset_entry.text()
+        hours, minutes, seconds_milliseconds = timestamp.split(":")
+        seconds, milliseconds = seconds_milliseconds.split(".")
+
+        offset = 0
+        if hours:
+            offset += 3600 * int(hours)
+        if minutes:
+            offset += 60 * int(minutes)
+        if seconds:
+            offset += int(seconds)
+        if milliseconds:
+            offset += 0.001 * int(milliseconds)
+        return offset
