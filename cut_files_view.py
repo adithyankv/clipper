@@ -18,10 +18,6 @@ class CutFilesView(QWidget):
         self.timestamp_browse_button.clicked.connect(self.on_timestamp_browse_clicked)
         self.cut_button.clicked.connect(self.on_cut_button_clicked)
 
-        self.output_entry.setText("/home/phoneybadger/Downloads/test")
-        self.audio_entry.setText("/mnt/media/Music/someone you loved.mp3")
-        self.timestamp_entry.setText("/home/phoneybadger/Documents/random/test.json")
-
     def create_layout(self):
         grid_layout = QGridLayout()
 
