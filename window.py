@@ -14,6 +14,7 @@ class MainWindow(QMainWindow):
 
         self.audio_browse_button.clicked.connect(self.on_audio_browse_clicked)
         self.timestamp_browse_button.clicked.connect(self.on_timestamp_browse_clicked)
+        self.output_browse_button.clicked.connect(self.on_output_browse_clicked)
 
     def create_layout(self) -> None:
         self.setWindowTitle("App")
@@ -37,14 +38,21 @@ class MainWindow(QMainWindow):
         self.offset_entry.setInputMask("09:09:09.999")
         self.offset_entry.setText("00:00:00.000")
 
+        output_dir_label = QLabel("Output directory")
+        self.output_entry = QLineEdit()
+        self.output_browse_button = QPushButton("Browse")
+
         grid_layout.addWidget(audio_label, 0, 0)
         grid_layout.addWidget(self.audio_entry, 0, 1)
         grid_layout.addWidget(self.audio_browse_button, 0, 2)
         grid_layout.addWidget(timestamp_label, 1, 0)
         grid_layout.addWidget(self.timestamp_entry, 1, 1)
         grid_layout.addWidget(self.timestamp_browse_button, 1, 2)
-        grid_layout.addWidget(offset_label, 2, 0)
-        grid_layout.addWidget(self.offset_entry, 2, 1)
+        grid_layout.addWidget(output_dir_label, 2, 0)
+        grid_layout.addWidget(self.output_entry, 2, 1)
+        grid_layout.addWidget(self.output_browse_button, 2, 2)
+        grid_layout.addWidget(offset_label, 3, 0)
+        grid_layout.addWidget(self.offset_entry, 3, 1)
 
         cut_button = QPushButton("Cut audio clip")
         cut_button.setDefault(True)
@@ -85,3 +93,9 @@ class MainWindow(QMainWindow):
             urls = dialog.selectedFiles()
             url = urls[0]
             self.timestamp_entry.setText(url)
+
+    @Slot()
+    def on_output_browse_clicked(self) -> None:
+        dialog = QFileDialog()
+        url = dialog.getExistingDirectory()
+        self.output_entry.setText(url)
