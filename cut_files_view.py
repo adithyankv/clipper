@@ -1,3 +1,6 @@
+import mimetypes
+import re
+
 from PySide6.QtCore import Qt, Signal, Slot
 from PySide6.QtWidgets import (QFileDialog, QGridLayout, QHBoxLayout, QLabel,
                                QLineEdit, QMessageBox, QPushButton,
@@ -17,6 +20,7 @@ class CutFilesView(QWidget):
         self.audio_browse_button.clicked.connect(self.on_audio_browse_clicked)
         self.timestamp_browse_button.clicked.connect(self.on_timestamp_browse_clicked)
         self.cut_button.clicked.connect(self.on_cut_button_clicked)
+        self.output_browse_button.clicked.connect(self.on_output_browse_clicked)
 
     def create_layout(self):
         grid_layout = QGridLayout()
