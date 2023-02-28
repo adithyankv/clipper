@@ -9,8 +9,8 @@ from PySide6.QtWidgets import (QDialog, QFileDialog, QGridLayout, QLabel,
                                QWidget)
 
 from audio_cutter import AudioCutter
-from cut_files_view import SelectFilesView
-from select_files_view import CutFilesView
+from cut_files_view import CutFilesView
+from select_files_view import SelectFilesView
 
 
 class MainWindow(QMainWindow):
