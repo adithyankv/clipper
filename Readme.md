@@ -1,4 +1,9 @@
-# Cutter
+<div align="center">
+  <div align="center">
+    <img src="resources/app_icon.png" width="64">
+  </div>
+  <h1 align="center">Cutter</h1>
+</div>
 
 GUI app to cut audio files using prerecorded timestamps
 
