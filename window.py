@@ -40,5 +40,6 @@ class MainWindow(QMainWindow):
     def on_files_selected(self) -> None:
         self.stack.setCurrentWidget(self.cut_files_view)
         # Running in a separate thread so as not to block UI.
-        thread = Thread(target=self.audio_cutter.start_cutting)
-        thread.start()
+        # thread = Thread(target=self.audio_cutter.start_cutting)
+        # thread.start()
+        self.audio_cutter.start_cutting()
