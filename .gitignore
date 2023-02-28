@@ -5,3 +5,4 @@
 .mypy.ini
 *.pyc
 __pycache__
+test
