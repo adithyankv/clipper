@@ -9,8 +9,8 @@ from PySide6.QtWidgets import (QDialog, QFileDialog, QGridLayout, QLabel,
                                QWidget)
 
 from audio_cutter import AudioCutter
-from cut_files_view import CutFilesView
-from select_files_view import SelectFilesView
+from cut_files_view import SelectFilesView
+from select_files_view import CutFilesView
 
 
 class MainWindow(QMainWindow):
@@ -20,7 +20,7 @@ class MainWindow(QMainWindow):
 
         self.create_layout()
 
-        self.cut_files_view.files_selected.connect(self.on_files_selected)
+        self.select_files_view.files_selected.connect(self.on_files_selected)
 
     def create_layout(self) -> None:
         self.setWindowTitle("App")
@@ -34,11 +34,11 @@ class MainWindow(QMainWindow):
         self.stack.addWidget(self.cut_files_view)
         self.setCentralWidget(self.stack)
 
-        self.stack.setCurrentWidget(self.cut_files_view)
+        self.stack.setCurrentWidget(self.select_files_view)
 
     @Slot()
     def on_files_selected(self) -> None:
-        self.stack.setCurrentWidget(self.select_files_view)
+        self.stack.setCurrentWidget(self.cut_files_view)
         # Running in a separate thread so as not to block UI.
         thread = Thread(target=self.audio_cutter.start_cutting)
         thread.start()

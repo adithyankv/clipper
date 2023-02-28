@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QLabel, QProgressBar, QVBoxLayout, QWidget
 from audio_cutter import AudioCutter
 
 
-class SelectFilesView(QWidget):
+class CutFilesView(QWidget):
     def __init__(self, audio_cutter: AudioCutter) -> None:
         super().__init__()
         self.create_layout()

@@ -9,7 +9,7 @@ from PySide6.QtWidgets import (QFileDialog, QGridLayout, QHBoxLayout, QLabel,
 from audio_cutter import AudioCutter
 
 
-class CutFilesView(QWidget):
+class SelectFilesView(QWidget):
     files_selected = Signal()
 
     def __init__(self, audio_cutter: AudioCutter) -> None:
