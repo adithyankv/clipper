@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 import filetype
-from pydub import AudioSegment
+import soundfile as sf
 from PySide6.QtCore import QObject, Signal
 
 
@@ -33,10 +33,13 @@ class AudioCutter(QObject):
                 self.audio_offset + values["start"],
                 self.audio_offset + values["end"],
             )
-            start_time_ms, end_time_ms = start * 1000, end * 1000
-            clip = self.audio[start_time_ms:end_time_ms]
-            clip.export(
-                Path(output_path, f"{id}.{self.audio_format}", format=self.audio_format)
+            start_sample = round(start * self.audio_sample_rate)
+            end_sample = round(end * self.audio_sample_rate)
+            clip = self.audio[start_sample:end_sample, :]
+            sf.write(
+                Path(output_path, f"{id}.{self.audio_format}"),
+                clip,
+                self.audio_sample_rate,
             )
             self.finished_cut_clip_number.emit(i + 1)
         self.finished_cutting.emit()
@@ -54,7 +57,7 @@ class AudioCutter(QObject):
         path = Path(self.audio_file_url)
         if not path.exists():
             raise FileNotFoundError
-        self.audio = AudioSegment.from_file(path)
+        self.audio, self.audio_sample_rate = sf.read(path, always_2d=True)
         guessed_format = filetype.guess(path)
         if guessed_format is None:
             self.audio_format = "wav"
