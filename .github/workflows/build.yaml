@@ -17,7 +17,7 @@ jobs:
     - name: build .app using pyinstaller
       run: pyinstaller app-macos.spec
 
-    - name: compress and upload artifact
+    - name: compress artifact
       run: (cd dist && zip -r cutter.app.zip cutter.app)
 
     - uses: actions/upload-artifact@v3
