@@ -9,14 +9,6 @@ GUI app to cut audio files using prerecorded timestamps
 
 ## Running the code
 
-### Prerequisite
-You will need **ffmpeg** installed on your system.
-
-on Macos
-```
-brew install ffmpeg
-```
-
 ### Setting up and running
 Clone this directory
 ```
@@ -37,4 +29,14 @@ pip install -r requirements.txt
 run the app
 ```
 python3 app.py
+```
+
+### Building a MacOS executable
+To create a MacOS application, Install pyinstaller in your virtual environment
+```
+pip install pyinstaller
+```
+then run
+```
+pyinstaller app-macos.spec
 ```
